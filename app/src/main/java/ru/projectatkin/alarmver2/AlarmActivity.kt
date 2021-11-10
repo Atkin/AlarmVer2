@@ -9,6 +9,14 @@ import org.w3c.dom.Text
 
 class AlarmActivity : AppCompatActivity() {
     lateinit var ringtone: Ringtone
+    var isPlaying = false
+
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+
+        isPlaying = savedInstanceState.getBoolean("Playing")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,14 +28,23 @@ class AlarmActivity : AppCompatActivity() {
             notificationRingtone = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
             this.ringtone = RingtoneManager.getRingtone(this, notificationRingtone)
         }
-        if (ringtone != null) {
+        if (ringtone != null && !isPlaying) {
             ringtone.play()
+            isPlaying = true
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.run {
+            putBoolean("Playing", isPlaying)
+        }
+        super.onSaveInstanceState(outState)
+    }
+
     override fun onDestroy() {
-        if(ringtone != null && ringtone.isPlaying) {
+        if (ringtone != null && ringtone.isPlaying) {
             ringtone.stop()
+            isPlaying = false
         }
         super.onDestroy()
     }
