@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    //Действия
     private fun getAlarmActionPendingIntent(): PendingIntent {
         intent = Intent(this, AlarmActivity()::class.java)
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
